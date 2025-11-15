@@ -1,43 +1,107 @@
-import requests, json, os, time
+import requests
+import json
+import os
+import time
 from bs4 import BeautifulSoup
 from datetime import datetime
 
-HEADERS = {'User-Agent': 'Mozilla/5.0'}
-OUTPUT_AIRDROP = "data/airdrops.json"
-OUTPUT_NEWS = "data/news.json"
+HEADERS = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'}
 
-def scrape_airdrops_io():
+os.makedirs("data", exist_ok=True)
+
+def scrape_airdrops():
+    """Scrap airdrops.io - Updated selectors for 2025 structure"""
+    url = "https://airdrops.io/latest/"
     try:
-        r = requests.get("https://airdrops.io/latest/", headers=HEADERS, timeout=10)
+        r = requests.get(url, headers=HEADERS, timeout=15)
+        r.raise_for_status()
         soup = BeautifulSoup(r.text, 'html.parser')
-        items = soup.select('.airdrop-item')[:10]
-        return [{"source":"airdrops.io","title":i.select_one('.airdrop-title a').text.strip(),
-                 "link":"https://airdrops.io"+i.select_one('.airdrop-title a')['href'],
-                 "reward":i.select_one('.airdrop-reward').text.strip() if i.select_one('.airdrop-reward') else "TBA",
-                 "end":i.select_one('.airdrop-end').text.replace('Ends:','').strip() if i.select_one('.airdrop-end') else "Ongoing"} for i in items]
-    except: return []
+        
+        # Updated selector: Cari semua .airdrop-item atau fallback ke article/list items
+        items = soup.select('.airdrop-item') or soup.select('article') or soup.select('[class*="airdrop"]')
+        if not items:
+            print("No items found - check site structure")
+            return []
+        
+        data = []
+        for i in items[:10]:  # Ambil max 10
+            title_elem = i.select_one('.airdrop-title a, h3 a, .title a')  # Flexible selector
+            if not title_elem:
+                continue
+            title = title_elem.text.strip()
+            link = title_elem.get('href', '')
+            if link.startswith('/'):
+                link = "https://airdrops.io" + link
+            elif not link.startswith('http'):
+                link = "https://airdrops.io/" + link
+            
+            reward_elem = i.select_one('.airdrop-reward, .reward, .prize')
+            reward = reward_elem.text.strip() if reward_elem else "TBA"
+            
+            end_elem = i.select_one('.airdrop-end, .end-date, .deadline')
+            end_text = end_elem.text.strip() if end_elem else ""
+            end = end_text.replace('Ends: ', '').replace('Ends ', '').strip() if end_text else "Ongoing"
+            
+            data.append({
+                "source": "airdrops.io",
+                "title": title,
+                "link": link,
+                "reward": reward,
+                "end": end
+            })
+        return data
+    except Exception as e:
+        print(f"Error scraping airdrops: {e}")
+        return []
 
-def scrape_cmc_news():
+def scrape_news():
+    """Scrap CoinDesk sebagai alternatif - Fresh berita crypto 2025"""
+    url = "https://www.coindesk.com/"
     try:
-        r = requests.get("https://coinmarketcap.com/community/articles/", headers=HEADERS, timeout=10)
+        r = requests.get(url, headers=HEADERS, timeout=15)
+        r.raise_for_status()
         soup = BeautifulSoup(r.text, 'html.parser')
-        items = soup.select('.article-item')[:8]
-        return [{"title":i.select_one('h3').text.strip(),
-                 "date":i.select_one('.date').text.strip() if i.select_one('.date') else "Recent",
-                 "link":"https://coinmarketcap.com"+i.select_one('a')['href']} for i in items]
-    except: return []
+        
+        # Selector untuk CoinDesk articles (updated 2025)
+        items = soup.select('.article-card, .story, article')[:8]
+        if not items:
+            print("No news items found")
+            return []
+        
+        data = []
+        for i in items:
+            title_elem = i.select_one('h3 a, h2 a, .title a, h1 a')
+            if not title_elem:
+                continue
+            title = title_elem.text.strip()
+            link = title_elem.get('href', '')
+            if link.startswith('/'):
+                link = "https://www.coindesk.com" + link
+            elif not link.startswith('http'):
+                link = "https://www.coindesk.com/" + link
+            
+            date_elem = i.select_one('.date, time, .published')
+            date = date_elem.text.strip() if date_elem else "Today"
+            
+            data.append({
+                "title": title,
+                "date": date,
+                "link": link
+            })
+        return data
+    except Exception as e:
+        print(f"Error scraping news: {e}")
+        return []
 
-def run():
-igh    os.makedirs("data", exist_ok=True)
-    all_airdrops = scrape_airdrops_io()
-    news = scrape_cmc_news()
-    
-    with open(OUTPUT_AIRDROP, 'w', encoding='utf-8') as f:
-        json.dump(all_airdrops, f, indent=2, ensure_ascii=False)
-    with open(OUTPUT_NEWS, 'w', encoding='utf-8') as f:
-        json.dump(news, f, indent=2, ensure_ascii=False)
-    
-    print(f"[{datetime.now()}] {len(all_airdrops)} airdrop | {len(news)} berita")
+# Jalankan scraping
+all_airdrops = scrape_airdrops()
+news_items = scrape_news()
 
-if __name__ == "__main__":
-    run()
+# Simpan JSON
+with open("data/airdrops.json", 'w', encoding='utf-8') as f:
+    json.dump(all_airdrops, f, indent=2, ensure_ascii=False)
+
+with open("data/news.json", 'w', encoding='utf-8') as f:
+    json.dump(news_items, f, indent=2, ensure_ascii=False)
+
+print(f"[{datetime.now().strftime('%Y-%m-%d %H:%M EET')}] Success! {len(all_airdrops)} airdrops | {len(news_items)} news saved.")
