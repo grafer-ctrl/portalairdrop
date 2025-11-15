@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contoh Embed Airdrops.one - Portal Airdrop</title>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { background: #0f0f1a; color: #e0e0ff; font-family: 'Inter', sans-serif; line-height: 1.6; }
+    .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+    header { background: #1a1a2e; padding: 1rem 0; border-bottom: 2px solid #00d4aa; text-align: center; }
+    .logo { font-family: 'Montserrat', sans-serif; font-size: 1.8rem; color: #00d4aa; }
+    .hero { background: linear-gradient(135deg, #1a1a2e, #16213e); padding: 2rem 0; text-align: center; }
+    .hero h1 { color: #00d4aa; margin-bottom: 1rem; }
+    .embed-section { margin: 2rem 0; }
+    .embed-section h2 { color: #00d4aa; margin-bottom: 1rem; }
+    iframe { width: 100%; height: 800px; border: none; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,212,170,0.1); }
+    .individual-links { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1rem; margin-top: 2rem; }
+    .link-card { background: #1a1a2e; padding: 1rem; border-radius: 8px; border-left: 4px solid #00d4aa; }
+    .link-card h4 { color: #00d4aa; margin-bottom: 0.5rem; }
+    .link-card button { background: #00d4aa; color: #000; border: none; padding: 0.5rem 1rem; border-radius: 6px; cursor: pointer; margin-top: 0.5rem; }
+    .link-card button:hover { background: #00b894; }
+    .modal { display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); }
+    .modal-content { background: #1a1a2e; margin: 5% auto; padding: 20px; border-radius: 12px; width: 90%; max-width: 800px; height: 80vh; }
+    .close { color: #aaa; float: right; font-size: 28px; font-weight: bold; cursor: pointer; }
+    .close:hover { color: #00d4aa; }
+    @media (max-width: 768px) { iframe { height: 60vh; } }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container">
+      <div class="logo">🚀 Portal Airdrop - Embed Test</div>
+    </div>
+  </header>
+
+  <section class="hero container">
+    <h1>Embed Live dari airdrops.one</h1>
+    <p>List airdrop Cosmos aktif (ongoing) – Update otomatis dari sumber.</p>
+  </section>
+
+  <main class="container embed-section">
+    <h2>Main Embed: Halaman Utama airdrops.one</h2>
+    <!-- Iframe utama untuk halaman list airdrop -->
+    <iframe src="https://airdrops.one/" 
+            title="Live Airdrops List - Cosmos Projects" 
+            loading="lazy">
+      <p>Browser tidak support iframe. <a href="https://airdrops.one/" target="_blank">Buka di tab baru</a>.</p>
+    </iframe>
+
+    <h2>Individual Pages: Embed Detail Airdrop (Klik untuk Buka)</h2>
+    <div class="individual-links">
+      <!-- Contoh 5 top airdrop dari test (bisa tambah lebih banyak) -->
+      <div class="link-card">
+        <h4>Crypto Dungeon ($DRAGON)</h4>
+        <p>Role Playing Platform – Ongoing</p>
+        <button onclick="openModal('https://airdrops.one/crypto-dungeon/')">Embed Detail</button>
+      </div>
+      <div class="link-card">
+        <h4>Drop ($DROP)</h4>
+        <p>Liquidity for the Interchain – Ongoing</p>
+        <button onclick="openModal('https://airdrops.one/1304-2/')">Embed Detail</button>
+      </div>
+      <div class="link-card">
+        <h4>Penumbra ($UM)</h4>
+        <p>Fully private cross-chain PoS network – Ongoing</p>
+        <button onclick="openModal('https://airdrops.one/penumbra/')">Embed Detail</button>
+      </div>
+      <div class="link-card">
+        <h4>Swisstronik ($SWTR)</h4>
+        <p>Identity-based hybrid blockchain – Ongoing</p>
+        <button onclick="openModal('https://airdrops.one/swisstronik/')">Embed Detail</button>
+      </div>
+      <div class="link-card">
+        <h4>Sunrise ($RISE)</h4>
+        <p>Specialized DA Layer for Proof of Liquidity – Ongoing</p>
+        <button onclick="openModal('https://airdrops.one/sunrise/')">Embed Detail</button>
+      </div>
+      <!-- Tambah lebih banyak jika perlu, misalnya ALLiN BETS, Mande Network, dll. -->
+    </div>
+  </main>
+
+  <!-- Modal untuk Individual Embed -->
+  <div id="modal" class="modal">
+    <div class="modal-content">
+      <span class="close" onclick="closeModal()">&times;</span>
+      <h2 id="modal-title">Detail Airdrop</h2>
+      <iframe id="modal-iframe" src="" width="100%" height="600" frameborder="0"></iframe>
+    </div>
+  </div>
+
+  <script>
+    function openModal(url) {
+      document.getElementById('modal-iframe').src = url;
+      document.getElementById('modal-title').textContent = url.split('/').pop().replace(/-/g, ' ').toUpperCase();
+      document.getElementById('modal').style.display = 'block';
+    }
+    function closeModal() {
+      document.getElementById('modal').style.display = 'none';
+      document.getElementById('modal-iframe').src = '';
+    }
+    // Tutup modal jika klik luar
+    window.onclick = function(event) {
+      const modal = document.getElementById('modal');
+      if (event.target == modal) closeModal();
+    }
+  </script>
+</body>
+</html>
