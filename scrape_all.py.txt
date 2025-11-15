@@ -1,0 +1,43 @@
+import requests, json, os, time
+from bs4 import BeautifulSoup
+from datetime import datetime
+
+HEADERS = {'User-Agent': 'Mozilla/5.0'}
+OUTPUT_AIRDROP = "data/airdrops.json"
+OUTPUT_NEWS = "data/news.json"
+
+def scrape_airdrops_io():
+    try:
+        r = requests.get("https://airdrops.io/latest/", headers=HEADERS, timeout=10)
+        soup = BeautifulSoup(r.text, 'html.parser')
+        items = soup.select('.airdrop-item')[:10]
+        return [{"source":"airdrops.io","title":i.select_one('.airdrop-title a').text.strip(),
+                 "link":"https://airdrops.io"+i.select_one('.airdrop-title a')['href'],
+                 "reward":i.select_one('.airdrop-reward').text.strip() if i.select_one('.airdrop-reward') else "TBA",
+                 "end":i.select_one('.airdrop-end').text.replace('Ends:','').strip() if i.select_one('.airdrop-end') else "Ongoing"} for i in items]
+    except: return []
+
+def scrape_cmc_news():
+    try:
+        r = requests.get("https://coinmarketcap.com/community/articles/", headers=HEADERS, timeout=10)
+        soup = BeautifulSoup(r.text, 'html.parser')
+        items = soup.select('.article-item')[:8]
+        return [{"title":i.select_one('h3').text.strip(),
+                 "date":i.select_one('.date').text.strip() if i.select_one('.date') else "Recent",
+                 "link":"https://coinmarketcap.com"+i.select_one('a')['href']} for i in items]
+    except: return []
+
+def run():
+igh    os.makedirs("data", exist_ok=True)
+    all_airdrops = scrape_airdrops_io()
+    news = scrape_cmc_news()
+    
+    with open(OUTPUT_AIRDROP, 'w', encoding='utf-8') as f:
+        json.dump(all_airdrops, f, indent=2, ensure_ascii=False)
+    with open(OUTPUT_NEWS, 'w', encoding='utf-8') as f:
+        json.dump(news, f, indent=2, ensure_ascii=False)
+    
+    print(f"[{datetime.now()}] {len(all_airdrops)} airdrop | {len(news)} berita")
+
+if __name__ == "__main__":
+    run()

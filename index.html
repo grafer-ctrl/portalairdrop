@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Portal Airdrop - Update Harian Airdrop Gratis 2025</title>
+  <meta name="description" content="Portal airdrop terbaru 2025 - update otomatis dari 10+ situs. Airdrop verified, tanpa scam." />
+
+  <!-- GOOGLE SEARCH CONSOLE VERIFICATION (TERSEMBUNYI) -->
+  <meta name="google-site-verification" content="KODE_VERIFIKASI_GSC_ANDA" />
+
+  <!-- PWA MANIFEST & SERVICE WORKER -->
+  <link rel="manifest" href="manifest.json" />
+  <link rel="icon" href="favicon.png" />
+  <meta name="theme-color" content="#00d4aa">
+
+  <!-- FONT & CSS -->
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <!-- IKLAN MONETAG (TERSEMBUNYI, TIDAK GANGGU UX) -->
+  <div id="monetag-container" style="position:fixed;bottom:0;right:0;width:1px;height:1px;overflow:hidden;opacity:0;">
+    <script src="https://monetag.com/scripts.js" data-monetag="YOUR_MONETAG_ID" async></script>
+  </div>
+
+  <!-- IKLAN ADSTERA (TERSEMBUNYI) -->
+  <div id="adstera-container" style="display:none;">
+    <script src="https://www.adstera.com/ads.js" data-adstera="YOUR_ADSTERA_ID" async></script>
+  </div>
+
+  <header>
+    <div class="container">
+      <div class="logo">Portal Airdrop</div>
+      <nav>
+        <a href="#">Home</a>
+        <a href="#airdrops">Airdrop</a>
+        <a href="#news">Berita</a>
+        <a href="#tips">Tips</a>
+      </nav>
+    </div>
+  </header>
+
+  <section class="hero">
+    <div class="container">
+      <h1>Hunt Airdrop Gratis Terbaru</h1>
+      <p>Update otomatis tiap hari jam <b>08:00 EET</b> • Verified • Tanpa Scam</p>
+      <div class="stats">
+        <span id="total-airdrop">0</span> Airdrop Aktif
+        <span id="last-update">-</span>
+      </div>
+      <button onclick="installPWA()" id="install-btn" style="display:none;background:#00d4aa;color:#000;padding:0.7rem 1.2rem;border:none;border-radius:8px;margin-top:1rem;cursor:pointer;">Install App</button>
+    </div>
+  </section>
+
+  <main class="container">
+    <section id="airdrops">
+      <h2>Airdrop Terbaru (Update Otomatis)</h2>
+      <div id="airdrop-list" class="grid"></div>
+    </section>
+
+    <section id="news">
+      <h2>Berita Crypto Terbaru</h2>
+      <div id="news-list" class="grid"></div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container">
+      <p>© 2025 PortalAirdrop.com • <a href="https://github.com/USERNAME/portalairdrop" target="_blank">GitHub</a> • DYOR</p>
+    </div>
+  </footer>
+
+  <!-- PWA INSTALL SCRIPT -->
+  <script>
+    let deferredPrompt;
+    const installBtn = document.getElementById('install-btn');
+
+    window.addEventListener('beforeinstallprompt', (e) => {
+      e.preventDefault();
+      deferredPrompt = e;
+      installBtn.style.display = 'block';
+    });
+
+    window.installPWA = () => {
+      installBtn.style.display = 'none';
+      deferredPrompt.prompt();
+      deferredPrompt.userChoice.then((choice) => {
+        if (choice.outcome === 'accepted') {
+          console.log('PWA installed');
+        }
+        deferredPrompt = null;
+      });
+    };
+
+    // Load Data
+    fetch('data/airdrops.json?' + Date.now())
+      .then(r => r.json())
+      .then(data => {
+        document.getElementById('total-airdrop').textContent = data.length;
+        document.getElementById('last-update').textContent = new Date().toLocaleString('id-ID');
+        const container = document.getElementById('airdrop-list');
+        data.forEach(a => {
+          const card = document.createElement('div');
+          card.className = 'card';
+          card.innerHTML = `
+            <div class="source">${a.source}</div>
+            <h3>${a.title}</h3>
+            <p><b>Reward:</b> ${a.reward} | <b>Ends:</b> ${a.end}</p>
+            <a href="${a.link}" target="_blank" class="btn">Join Airdrop</a>
+          `;
+          container.appendChild(card);
+        });
+      });
+
+    fetch('data/news.json?' + Date.now())
+      .then(r => r.json())
+      .then(data => {
+        const container = document.getElementById('news-list');
+        data.slice(0, 6).forEach(n => {
+          const card = document.createElement('div');
+          card.className = 'card';
+          card.innerHTML = `
+            <h3>${n.title}</h3>
+            <p class="date">${n.date}</p>
+            <a href="${n.link}" target="_blank" class="btn small">Baca</a>
+          `;
+          container.appendChild(card);
+        });
+      });
+  </script>
+
+  <!-- REGISTER SERVICE WORKER -->
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('sw.js')
+          .then(reg => console.log('SW registered'))
+          .catch(err => console.log('SW error:', err));
+      });
+    }
+  </script>
+</body>
+</html>
