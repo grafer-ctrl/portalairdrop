@@ -1,21 +1,14 @@
 {
   "name": "Portal Airdrop",
   "short_name": "Airdrop",
-  "description": "Update airdrop terbaru 2025 - installable app",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#0f0f1a",
   "theme_color": "#00d4aa",
-  "orientation": "portrait-primary",
   "icons": [
     {
-      "src": "icon-192.png",
+      "src": "https://via.placeholder.com/192x192/00d4aa/000000?text=A",
       "sizes": "192x192",
-      "type": "image/png"
-    },
-    {
-      "src": "icon-512.png",
-      "sizes": "512x512",
       "type": "image/png"
     }
   ]
