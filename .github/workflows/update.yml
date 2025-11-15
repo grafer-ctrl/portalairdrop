@@ -1,0 +1,41 @@
+name: Daily Update
+on:
+  schedule:
+    - cron: '0 6 * * *'  # 08:00 EET (UTC+2)
+  workflow_dispatch:
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+      - run: pip install requests beautifulsoup4
+      - run: python scrape_all.py
+      - run: |
+          git config user.name "Airdrop Bot"
+          git config user.email "bot@portalairdrop.com"
+          git add data/*
+          git commit -m "Update: $(date '+%Y-%m-%d %H:%M EET')" || exit 0
+          git pushname: Daily Update
+on:
+  schedule:
+    - cron: '0 6 * * *'  # 08:00 EET (UTC+2)
+  workflow_dispatch:
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+      - run: pip install requests beautifulsoup4
+      - run: python scrape_all.py
+      - run: |
+          git config user.name "Airdrop Bot"
+          git config user.email "bot@portalairdrop.com"
+          git add data/*
+          git commit -m "Update: $(date '+%Y-%m-%d %H:%M EET')" || exit 0
+          git push
