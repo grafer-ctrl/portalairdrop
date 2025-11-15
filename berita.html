@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Berita Crypto - CoinMarketCap Articles</title>
+  <meta name="description" content="Update artikel terbaru dari CoinMarketCap. Bitcoin, Solana, Airdrop, ETF — live 24/7." />
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    /* RESET & FONT */
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Inter', sans-serif; background: #0f0f1a; color: #e0e0ff; line-height: 1.6; }
+    .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+
+    /* HEADER */
+    header { background: #1a1a2e; padding: 1rem 0; border-bottom: 2px solid #00d4aa; position: relative; }
+    .logo { font-family: 'Montserrat', sans-serif; font-size: 1.8rem; color: #00d4aa; display: inline-block; }
+    .back-home {
+      position: absolute; right: 20px; top: 50%; transform: translateY(-50%);
+      background: #00d4aa; color: #000; padding: 0.5rem 1rem; border-radius: 6px;
+      text-decoration: none; font-weight: 600; font-size: 0.9rem;
+    }
+    .back-home:hover { background: #00b894; }
+
+    /* HERO */
+    .hero { padding: 3rem 0; text-align: center; background: linear-gradient(135deg, #1a1a2e, #16213e); }
+    .hero h1 { font-size: 2.5rem; color: #00d4aa; margin-bottom: 1rem; }
+    .hero p { color: #aaa; margin-bottom: 1.5rem; }
+
+    /* EMBED SECTION */
+    .embed-section { padding: 2rem 0; }
+    .embed-container {
+      background: #1a1a2e; padding: 1.5rem; border-radius: 12px;
+      border: 1px solid #00d4aa33; box-shadow: 0 4px 15px rgba(0,212,170,0.1);
+    }
+    iframe {
+      width: 100%; height: 80vh; border: none; border-radius: 8px;
+      background: #fff; /* fallback jika iframe lambat */
+    }
+
+    /* FOOTER */
+    footer { background: #1a1a2e; padding: 1.5rem 0; text-align: center; font-size: 0.9rem; color: #666; margin-top: 3rem; }
+    footer a { color: #00d4aa; text-decoration: none; }
+    footer a:hover { text-decoration: underline; }
+
+    /* RESPONSIVE */
+    @media (max-width: 768px) {
+      .logo { font-size: 1.5rem; }
+      .back-home { position: static; display: block; margin: 1rem auto 0; width: fit-content; }
+      .hero h1 { font-size: 2rem; }
+      iframe { height: 70vh; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header>
+    <div class="container">
+      <div class="logo">Portal Airdrop</div>
+      <a href="index.html" class="back-home">Kembali ke Home</a>
+    </div>
+  </header>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="container">
+      <h1>Berita Crypto Terbaru</h1>
+      <p>Live dari <strong>CoinMarketCap Community Articles</strong> — update setiap menit</p>
+      <p>Bitcoin ETF, Solana Airdrop, Meme Coin Rally — semua di sini.</p>
+    </div>
+  </section>
+
+  <!-- EMBED COINMARKETCAP ARTICLES -->
+  <section class="embed-section">
+    <div class="container">
+      <div class="embed-container">
+        <iframe 
+          src="https://coinmarketcap.com/community/articles/" 
+          title="CoinMarketCap Community Articles - Live"
+          loading="lazy">
+          <p>Browser tidak support iframe. <a href="https://coinmarketcap.com/community/articles/" target="_blank">Buka di tab baru</a></p>
+        </iframe>
+      </div>
+      <p style="text-align:center; margin-top:1rem; color:#aaa; font-size:0.9rem;">
+        Update terakhir: 15 Nov 2025 • <a href="https://coinmarketcap.com/community/articles/" target="_blank">Buka di CoinMarketCap</a>
+      </p>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="container">
+      <p>© 2025 PortalAirdrop.com • <a href="index.html">Home</a> • <a href="garapanbaru.html">Airdrop Potensial</a></p>
+    </div>
+  </footer>
+
+</body>
+</html>
