@@ -104,3 +104,36 @@ footer a { color: #00d4aa; }
   .hero h1 { font-size: 2rem; }
   #embed-iframe { height: 60vh; }
 }
+/* KARTU POTENSIAL - SPESIAL */
+.card.special {
+  border: 2px solid #ffd700;
+  background: linear-gradient(135deg, #1a1a2e, #2d1b1b);
+  position: relative;
+  overflow: hidden;
+}
+.card.special::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 4px;
+  background: linear-gradient(90deg, #ffd700, #ff6b6b);
+}
+.badge {
+  position: absolute;
+  top: 10px; right: 10px;
+  background: #ffd700;
+  color: #000;
+  font-weight: 700;
+  font-size: 0.7rem;
+  padding: 4px 8px;
+  border-radius: 4px;
+  letter-spacing: 0.5px;
+}
+.btn-special {
+  background: #ffd700 !important;
+  color: #000 !important;
+  font-weight: 700 !important;
+}
+.btn-special:hover {
+  background: #ffed4e !important;
+}
